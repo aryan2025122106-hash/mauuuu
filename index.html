@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet" />
+    <title>Do you love me?</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffe6e9 0%, #ffc1cc 100%);
+            font-family: "Quicksand", sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Heart Rain Styling */
+        .heart-rain {
+            position: absolute;
+            top: -10%;
+            color: #ff6b81;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        /* The Romantic Box */
+        .love-box {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            padding: 50px 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 107, 129, 0.3);
+            text-align: center;
+            z-index: 10;
+            width: 450px;
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Fixed the media styling to apply to both img and video */
+        .local-media, .gif-result {
+            width: 100%;
+            max-width: 220px;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(255, 107, 129, 0.2);
+            border: 4px solid white;
+            display: block;
+        }
+
+        .question {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #d63384;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            position: relative;
+            height: 50px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 50px;
+            padding: 12px 35px;
+            font-family: "Quicksand", sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            background-color: #ff6b81;
+            color: white;
+            box-shadow: 0px 4px 15px rgba(255, 107, 129, 0.4);
+            white-space: nowrap;
+        }
+
+        .yes-btn {
+            z-index: 2;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .no-btn {
+            position: relative; 
+            z-index: 2;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .btn:hover {
+            background-color: #ff4757;
+        }
+
+        .result-container {
+            display: none;
+        }
+
+        .result-container h2 {
+            font-size: 2.8rem;
+            color: #ff4757;
+        }
+
+        /* Heart Loader */
+        .cssload-main {
+            display: none;
+        }
+        .cssload-main * { font-size: 60px; }
+        .cssload-heart {
+            animation: cssload-heart 2.88s infinite;
+            position: relative;
+            margin: 0 auto;
+            width: 1em;
+            height: 1em;
+        }
+        .cssload-heartL, .cssload-heartR, .cssload-square { background-color: #ff0000; position: absolute; }
+        .cssload-heartL { width: 1em; height: 1em; border-radius: 100%; transform: translate(-28px, -27px); }
+        .cssload-heartR { width: 1em; height: 1em; border-radius: 100%; transform: translate(28px, -27px); }
+        .cssload-square { width: 1em; height: 1em; transform: rotate(-45deg); }
+        @keyframes cssload-heart { 50% { transform: rotate(360deg); } 100% { transform: rotate(720deg); } }
+    </style>
+</head>
+<body>
+
+<div class="love-box">
+    <div class="question-container container">
+        <img src="img1.jpeg" class="local-media" alt="Cute image">
+        <h2 class="question">Do you love me?</h2>
+        <div class="button-container">
+            <button class="yes-btn btn js-yes-btn">Yes</button>
+            <button class="no-btn btn js-no-btn">No</button>
+        </div>
+    </div>
+
+    <div class="cssload-main">
+        <div class="cssload-heart">
+            <span class="cssload-heartL"></span>
+            <span class="cssload-heartR"></span>
+            <span class="cssload-square"></span>
+        </div>
+    </div>
+
+    <div class="result-container container">
+        <video class="gif-result" src="cat.mp4" autoplay loop muted playsinline></video>
+        <h2>I knew it 😍!</h2>
+    </div>
+</div>
+
+<script>
+    // --- Heart Rain Logic ---
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-rain');
+        heart.innerHTML = '❤';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+        heart.style.opacity = Math.random();
+        heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+        
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.remove();
+        }, 5000);
+    }
+
+    setInterval(createHeart, 300);
+
+    // --- Interaction Logic ---
+    const questionContainer = document.querySelector(".question-container");
+    const resultContainer = document.querySelector(".result-container");
+    const gifResult = document.querySelector(".gif-result");
+    const heartLoader = document.querySelector(".cssload-main");
+    const yesBtn = document.querySelector(".js-yes-btn");
+    const noBtn = document.querySelector(".js-no-btn");
+    const loveBox = document.querySelector(".love-box");
+
+    noBtn.addEventListener("mouseover", () => {
+        noBtn.style.position = "absolute";
+        
+        const boxWidth = loveBox.clientWidth;
+        const boxHeight = loveBox.clientHeight;
+        const btnWidth = noBtn.offsetWidth;
+        const btnHeight = noBtn.offsetHeight;
+
+        const newX = Math.floor(Math.random() * (boxWidth - btnWidth - 60)) + 30;
+        const newY = Math.floor(Math.random() * (boxHeight - btnHeight - 60)) + 30;
+
+        noBtn.style.left = `${newX}px`;
+        noBtn.style.top = `${newY}px`;
+    });
+
+    yesBtn.addEventListener("click", () => {
+        questionContainer.style.display = "none";
+        heartLoader.style.display = "block";
+
+        setTimeout(() => {
+            heartLoader.style.display = "none";
+            resultContainer.style.display = "flex";
+            // Check if video exists before playing
+            if(gifResult) gifResult.play();
+        }, 3000);
+    });
+</script>
+
+</body>
+</html>
